@@ -12,11 +12,20 @@ describe('Updating records', () => {
       .catch(error => done(error))
   })
 
-  it('instance type using set and save', done => {
-    joe
-      .set('name', 'Alex')
-      .save()
-      .then(() => done())
+  const assertName = (operation, done) => {
+    operation
+      .then(() => User.find({}))
+      .then(users => {
+        assert(users.length === 1)
+        assert(users[0].name === 'Alex')
+        done()
+      })
       .catch(error => done(error))
-  })
+  }
+
+  it('instance type using set and save', done =>
+    assertName(joe.set('name', 'Alex').save(), done))
+
+  it('model instance can update', done =>
+    assertName(joe.update({ name: 'Alex' }), done))
 })
