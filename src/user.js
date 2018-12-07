@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
+const PostSchema = require('./post')
+
 const UserSchema = Schema({
   name: {
     type: String,
@@ -10,7 +12,12 @@ const UserSchema = Schema({
       message: 'Name must be longer than two charactors'
     }
   },
-  postCount: { type: Number, default: 0, required: true }
+  posts: [PostSchema],
+  likes: { type: Number, default: 0, required: true }
+})
+
+UserSchema.virtual('postCount').get(function() {
+  return this.posts.length
 })
 
 const User = mongoose.model('User', UserSchema)
