@@ -37,7 +37,9 @@ describe('Associations', () => {
         populate: { path: 'comments', populate: { path: 'user' } }
       })
       .then(user => {
-        console.log(user.blogPosts[0])
+        assert(
+          user.blogPosts[0].comments[0].content === 'Congrats on great post'
+        )
         done()
       })
       .catch(error => done(error))
